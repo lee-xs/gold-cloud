@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="applicable-device" content="mobile">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>中签查询工具</title>
+    <link href="css/public.css" rel="stylesheet" type="text/css">
+    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        input, button, textarea, select {
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            border: 0;
+            background: 0 0;
+            -webkit-appearance: none;
+            outline: 0
+        }
+
+        .top {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #alees {
+            width: 30%;
+            height: 30%;
+            margin-top: 20px;
+        }
+
+        .ui-btn.disabled, .disabled.ui-btn-lg, .ui-btn:disabled, .ui-btn-lg:disabled {
+            border: 1px solid #e9ebec;
+            color: #ccc;
+            background: #e9ebec;
+            text-shadow: none;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box
+        }
+
+        .ui-btn-lg {
+            font-size: 24px;
+            height: 60px;
+            line-height: 42px;
+            display: block;
+            width: 100%;
+            border-radius: 5px
+        }
+
+        .ui-btn-wrap {
+            /*padding: 20px 15px*/
+        }
+
+
+        .tit {
+            float: left;
+            height: 50px;
+            margin-bottom: 10px;
+            font-family: "微软雅黑";
+            line-height: 50px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .tit .qvv {
+            width: 3px;
+            background: #6495ED;
+            height: 20px;
+            float: left;
+            margin: 15px 10px 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="top"><img id="alees" src="https://q1.qlogo.cn/g?b=qq&nk=52110919&s=640"></div>
+<div class="w main">
+    <div class="tit">
+        <div class="qvv"></div>
+        中国金币云商中签结果查询
+    </div>
+    <div class="item item-username">
+        <select class="txt-input" id="selectItem" name="ClassID">
+            <option value="0">请选择预约名称</option>
+            <!--		  <option value="1">150克银币套装</option>-->
+            <!--		  <option value="2">金银套币</option>-->
+            <!--		  <option value="3">30克银币</option>-->
+            <!--		  <option value="4">金银大全套</option>-->
+            <option value="1">【吉祥文化】琴瑟和鸣30克银币</option>
+            <option value="2">【吉祥文化】竹报平安15克银币</option>
+            <option value="3">【吉祥文化】琴瑟和鸣金银套币</option>
+        </select>
+    </div>
+
+    <div class="item item-username">
+        <!--<input id="yourNumber" class="txt-input txt-username" type="number" pattern="\d*" placeholder="请输入预订号" value="" name="ydh"
+               oninput="value=value.replace(/[^\d]/g,&#39;&#39;)">-->
+        <input type="text" id="yourNumber" class="txt-input txt-username" placeholder="请输入预订号" name="ydh" oninput = "value=value.replace(/[^\d]/g,'')">
+        <b class="input-close" style="display: none;"></b>
+    </div>
+
+    <div class="ui-btn-wrap">
+        <input type="button" id="search" value="查  询" class="ui-btn-lg ui-btn-primary" />
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+    var resultList = new Array(3);
+    $(document).ready(() => {
+        winList(48912, 1200, 143860, 119, 0);
+        winList(17532, 1200, 91405, 76, 1);
+        winList(51960, 2780, 128644, 46, 2);
+
+        $('#search').click(() => {
+            var selectIndex = $('#selectItem').val();
+            if (selectIndex === '0') {
+                alert("请选择预约名称！");
+                return;
+            }
+            var list = resultList[selectIndex];
+            var yourNumber = $('#yourNumber').val();
+            if (yourNumber === undefined || yourNumber === null || yourNumber === '') {
+                alert("请输入预订号！");
+                return;
+            }
+            var yourResult = list.includes(yourNumber)? "中奖了" : "未中奖";
+            window.location.href = "result.html?yourNumber=" + encodeURI($("#selectItem option:selected").text()) + "&yourAppointItem=" + encodeURI($('#yourNumber').val()) + "&yourResult=" + encodeURI(yourResult);
+        })
+
+        $('#alees').click(() => {
+            window.open('https://alees.cn')
+        })
+    })
+
+    /**
+     * winStartIndex：中奖开始下标 Y
+     * winAmount：中奖量
+     * joinManTime：参加人次 X
+     * order：阶数 Z
+     * index：数组数据存储下标
+     */
+    function winList(winStartIndex, winAmount, joinManTime, order, index) {
+        resultList[index] = new Array();
+        for (var i = 0; i < winAmount; i++) {
+            var winNumber = winStartIndex + (order * i);
+            while(winNumber > joinManTime) {
+                winNumber -= joinManTime;
+            }
+            resultList[index].push(winNumber);
+        }
+    }
+</script>
+</html>
